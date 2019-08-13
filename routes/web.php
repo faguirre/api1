@@ -19,5 +19,12 @@ $router->get('/key', function () {
     return str_random(32);
 });
 $router->post('/users/login', ['uses' => 'UsersController@getToken']);
-$router->get('/users', ['uses' => 'UsersController@index']);
-$router->post('/users', ['uses' => 'UsersController@createUser']);
+
+$router->group(['middleware' => ['auth']], function () use ($router) {
+	//Aquí van las rutas protegidas por el middleware
+    $router->get('/users', ['uses' => 'UsersController@index']);
+    $router->post('/users', ['uses' => 'UsersController@createUser']);
+});
+
+
+
